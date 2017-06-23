@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GroceriesList</string>
+    <string name="app_name">Reminder and notes</string>
+    <string name="groceries_button">Add Groceries</string>
 </resources>
