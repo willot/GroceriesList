@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.grocerieslist.grocerieslist.GroceryActivity">
 
+    <TextView
+        android:id="@+id/list_item"
+        android:background="@color/colorFuchsia"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:textSize="15sp"
+        android:text="Banana"/>
+
 </android.support.constraint.ConstraintLayout>
