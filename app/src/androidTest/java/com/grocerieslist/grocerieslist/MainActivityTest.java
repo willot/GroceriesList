@@ -11,8 +11,10 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withResourceName;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +29,13 @@ public class MainActivityTest{
             new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testGorcerieButtonLabel() throws Exception {
-        onView(withId(R.id.groceries)).check(matches(withText("Add Groceries")));
+    public void testGorcerieButtonText() throws Exception {
+        ViewInteraction viewInteraction = onView(withId(R.id.groceries));
+        viewInteraction.check(matches(withText("Add Groceries")));
+    }
+
+    @Test
+    public void testGorcerieButtonBackgroundChangeColor() throws Exception {
+        onView(withId(R.id.groceries)).perform(click()).check(matches(withText("You clicked it")));
     }
 }
