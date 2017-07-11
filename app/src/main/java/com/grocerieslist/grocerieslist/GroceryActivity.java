@@ -26,7 +26,7 @@ public class GroceryActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        String[] dataSet ={"BOB","BUS","BIP","BOP"};
+        String[] dataSet ={"BOB","BUS","BIP","BOP","BUP","BAB","BIP","BRR","BYP","BAS","BRI","BOP","BOP","BTB","BWP","BZR","BAP","BQS","BDI"};
         mAdapter = new GroceryAdapter(dataSet);
         mRecyclerView.setAdapter(mAdapter);
 

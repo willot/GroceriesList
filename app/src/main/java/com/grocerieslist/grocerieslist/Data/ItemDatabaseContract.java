@@ -8,15 +8,15 @@ import android.provider.BaseColumns;
 public class ItemDatabaseContract{
 
 public final static class ItemListContract implements BaseColumns {
-    private static final String TABLE_NAME = "item_List";
-    private static final String COLUMN_QUANTITY = "item_Quantity";
-    private static final String COLUMN_ITEM_NAME = "item_Name";
-    private static final String COLUMN_TYPE = "item_Type_ID";
+    public static final String TABLE_NAME = "item_List";
+    public static final String COLUMN_QUANTITY = "item_Quantity";
+    public static final String COLUMN_ITEM_NAME = "item_Name";
+    public static final String COLUMN_TYPE = "item_Type_ID";
 
 }
 
 public final static class ItemTypeContract implements BaseColumns{
-    private static final String TABLE_NAME = "item_Type";
-    private static final String COLUMN_TYPE_NAME = "type_Name";
+    public static final String TABLE_NAME = "item_Type";
+    public static final String COLUMN_TYPE_NAME = "type_Name";
 }
 }
