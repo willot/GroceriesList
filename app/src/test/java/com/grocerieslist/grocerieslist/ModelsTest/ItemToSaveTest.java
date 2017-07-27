@@ -18,7 +18,7 @@ public class ItemToSaveTest {
     public void itemToSaveConstructorTest(){
         int expectedQuantity = 5;
         String expectedItemName = "Bus Bus";
-        int expectedType = 1;
+        String expectedType = "BB";
 
         ItemsToSave itemToSave = new ItemsToSave(expectedQuantity, expectedItemName, expectedType);
         assertEquals(expectedQuantity, itemToSave.getQuantity());
@@ -31,7 +31,7 @@ public class ItemToSaveTest {
         int quantity = 5;
         int expectedQuantity = 15;
         String expectedItemName = "Bus Bus";
-        int expectedType = 1;
+        String expectedType = "BB";
         ItemsToSave itemToSave = new ItemsToSave(quantity, expectedItemName, expectedType);
 
         itemToSave.setQuantity(expectedQuantity);
@@ -44,7 +44,7 @@ public class ItemToSaveTest {
         int expectedQuantity = 15;
         String ItemName = "Bus Bus";
         String expectedItemName = "Bob Bob";
-        int expectedType = 1;
+        String expectedType = "BB";
 
         ItemsToSave itemToSave = new ItemsToSave(expectedQuantity, ItemName, expectedType);
 
@@ -57,8 +57,8 @@ public class ItemToSaveTest {
     public void setTypeTest(){
         int expectedQuantity = 15;
         String expectedItemName = "Bob Bob";
-        int type = 1;
-        int expectedType = 6;
+        String type = "BB";
+        String expectedType = "BB";
 
         ItemsToSave itemToSave = new ItemsToSave(expectedQuantity, expectedItemName, type);
 

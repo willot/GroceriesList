@@ -7,11 +7,11 @@ import static android.R.attr.type;
  */
 
 public class ItemsToSave {
-    private int type;
+    private String type;
     private int quantity;
     private String itemName;
 
-    public ItemsToSave(int quantity, String itemName, int type){
+    public ItemsToSave(int quantity, String itemName, String type){
         this.quantity = quantity;
         this.itemName = itemName;
         this.type = type;
@@ -25,7 +25,7 @@ public class ItemsToSave {
         return itemName;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
@@ -37,7 +37,7 @@ public class ItemsToSave {
         this.itemName = itemName;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 }
