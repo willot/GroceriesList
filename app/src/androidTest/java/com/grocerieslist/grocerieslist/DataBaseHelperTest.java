@@ -1,5 +1,6 @@
 package com.grocerieslist.grocerieslist;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,11 +10,13 @@ import android.support.test.InstrumentationRegistry;
 
 import com.grocerieslist.grocerieslist.Data.DataBaseHelper;
 import com.grocerieslist.grocerieslist.Data.ItemDatabaseContract;
+import com.grocerieslist.grocerieslist.Models.ItemsToSave;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -160,7 +163,6 @@ public class DataBaseHelperTest {
                 testValues);
 
         Cursor wCursor = database.query(
-                /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
                 /* Columns; leaving this null returns every column in the table */
                 null,
@@ -194,13 +196,11 @@ public class DataBaseHelperTest {
         testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 994);
         testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOByr");
 
-        /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
                 null,
                 testValues);
 
-        /* Insert ContentValues into database and get another row ID back */
         long secondRowId = database.insert(
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
                 null,
@@ -240,6 +240,152 @@ public class DataBaseHelperTest {
 
         tableNameCursor.close();
         database.close();
+    }
+
+    @Test
+    public void createItemTest(){
+        DataBaseHelper dbHelper = new DataBaseHelper(mContext);
+
+        ContentValues testValues = new ContentValues();
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME, "test name2");
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 994);
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOByr");
+        long itemId = dbHelper.createItem(testValues);
+
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor wCursor = database.query(
+                /* Name of table on which to perform the query */
+                ItemDatabaseContract.ItemListContract.TABLE_NAME,
+                /* Columns; leaving this null returns every column in the table */
+                null,
+                /* Optional specification for columns in the "where" clause above */
+                null,
+                /* Values for "where" clause */
+                null,
+                /* Columns to group by */
+                null,
+                /* Columns to filter by row groups */
+                null,
+                /* Sort order to return in Cursor */
+                null);
+
+        assertTrue(wCursor.getCount() == 1);
+
+        assertNotEquals("Unable to insert into the database", -1, itemId);
+        assertEquals(1,itemId);
+
+        database.close();
+    }
+
+
+    @Test
+    public void deleteItemTest(){
+        DataBaseHelper dbHelper = new DataBaseHelper(mContext);
+
+        ContentValues testValues = new ContentValues();
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME, "test name2");
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 994);
+        testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOByr");
+        long itemId1 = dbHelper.createItem(testValues);
+        long itemId2 = dbHelper.createItem(testValues);
+
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor wCursor = database.query(
+                /* Name of table on which to perform the query */
+                ItemDatabaseContract.ItemListContract.TABLE_NAME,
+                /* Columns; leaving this null returns every column in the table */
+                null,
+                /* Optional specification for columns in the "where" clause above */
+                null,
+                /* Values for "where" clause */
+                null,
+                /* Columns to group by */
+                null,
+                /* Columns to filter by row groups */
+                null,
+                /* Sort order to return in Cursor */
+                null);
+
+        assertTrue(wCursor.getCount() == 2);
+        database.close();
+
+        int numberRowDeleted = dbHelper.deleteItem(itemId1);
+        assertEquals(1,numberRowDeleted);
+
+        SQLiteDatabase database2 = dbHelper.getReadableDatabase();
+
+        Cursor wCursor2 = database2.query(
+                /* Name of table on which to perform the query */
+                ItemDatabaseContract.ItemListContract.TABLE_NAME,
+                /* Columns; leaving this null returns every column in the table */
+                null,
+                /* Optional specification for columns in the "where" clause above */
+                null,
+                /* Values for "where" clause */
+                null,
+                /* Columns to group by */
+                null,
+                /* Columns to filter by row groups */
+                null,
+                /* Sort order to return in Cursor */
+                null);
+
+        assertTrue(wCursor2.getCount() == 1);
+        database2.close();
+    }
+    @Test
+    public void getAllItemTest(){
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(mContext);
+
+        ContentValues testValues1 = new ContentValues();
+        testValues1.put(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME, "item1");
+        testValues1.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 2);
+        testValues1.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOB");
+
+        ContentValues testValues2 = new ContentValues();
+        testValues2.put(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME, "item2");
+        testValues2.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 4);
+        testValues2.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOB");
+
+        long itemId1 = dataBaseHelper.createItem(testValues1);
+        long itemId2 = dataBaseHelper.createItem(testValues2);
+
+        Cursor cursor = dataBaseHelper.getAllItems();
+
+        assertEquals(2, cursor.getCount());
+        ArrayList<ItemsToSave> itemList = new ArrayList<ItemsToSave>();
+
+        if(cursor.moveToFirst()){
+            String quantityString = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY));
+            String name = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+            String type = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_TYPE));
+            int quantity = Integer.parseInt(quantityString);
+            ItemsToSave itemsToSave = new ItemsToSave(quantity, name, type);
+            itemList.add(itemsToSave);
+            while (cursor.moveToNext()) {
+                quantityString = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY));
+                name = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+                type = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_TYPE));
+                quantity = Integer.parseInt(quantityString);
+                itemsToSave = new ItemsToSave(quantity, name, type);
+                itemList.add(itemsToSave);
+            }
+        }
+
+        assertEquals(2,itemList.size());
+
+        assertEquals("item2", itemList.get(1).getItemName());
+        assertEquals(4, itemList.get(1).getQuantity());
+        assertEquals("BOB", itemList.get(1).getType());
+
+
+        assertEquals("item1", itemList.get(0).getItemName());
+        assertEquals(2, itemList.get(0).getQuantity());
+        assertEquals("BOB", itemList.get(0).getType());
+
+        deleteTheDatabase();
+
     }
 
 }
