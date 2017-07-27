@@ -1,6 +1,7 @@
 package com.grocerieslist.grocerieslist;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.grocerieslist.grocerieslist.Data.ItemDatabaseContract;
+
 import java.util.Random;
 
 /**
@@ -16,8 +19,7 @@ import java.util.Random;
  */
 
 public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHolder>    {
-    private String[] mDataset;
-    private int viewHolderCount;
+    private Cursor mCursor;
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         public TextView mTextView;
@@ -28,8 +30,8 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         }
     }
 
-    public GroceryAdapter(String[] dataSet){
-        mDataset = dataSet;
+    public GroceryAdapter(Cursor cursor){
+        mCursor = cursor;
     }
 
 
@@ -38,9 +40,9 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         Context context = viewGroup.getContext();
         int layoutId = R.layout.recycler_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view1  = inflater.inflate(layoutId, viewGroup, false);
+        View view  = inflater.inflate(layoutId, viewGroup, false);
 
-        ViewHolder viewHolder = new ViewHolder(view1);
+        ViewHolder viewHolder = new ViewHolder(view);
         int rgb = Color.rgb(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
         viewHolder.itemView.setBackgroundColor(rgb);
         return viewHolder;
@@ -48,12 +50,18 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(GroceryAdapter.ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset[position]);
+           if( mCursor.moveToPosition(position)) {
+               String itemName = mCursor.getString(mCursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+               holder.mTextView.setText(itemName);
+           }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        if(mCursor == null){
+            return 0;
+        }
+        return mCursor.getCount();
     }
 }
 
