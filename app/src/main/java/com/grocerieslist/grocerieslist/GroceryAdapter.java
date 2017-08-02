@@ -28,6 +28,10 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
             super(view);
             mTextView = (TextView) view.findViewById(R.id.item_text);
         }
+
+        public void setTextView(TextView textView){
+            mTextView = textView;
+        };
     }
 
     public GroceryAdapter(Cursor cursor){
@@ -63,5 +67,17 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         }
         return mCursor.getCount();
     }
+
+    public void refreshCursorItem(Cursor cursor){
+        if(mCursor !=null){
+            mCursor.close();
+        }
+        mCursor = cursor;
+
+        if(mCursor !=null){
+            this.notifyDataSetChanged();
+        }
+    }
+
 }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
 
 import com.grocerieslist.grocerieslist.Data.DataBaseHelper;
@@ -55,10 +56,6 @@ public class DataBaseHelperTest {
       @Test
     public void create_database_test() throws Exception{
 
-
-        /* Use reflection to try to run the correct constructor whenever implemented */
-//        SQLiteOpenHelper dbHelper =
-//                (SQLiteOpenHelper) mDbHelperClass.getConstructor(Context.class).newInstance(mContext);
         SQLiteOpenHelper dbHelper = new DataBaseHelper(mContext);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -86,12 +83,8 @@ public class DataBaseHelperTest {
     @Test
     public void insert_single_record_test() throws Exception{
 
-        /* Use reflection to try to run the correct constructor whenever implemented */
-        SQLiteOpenHelper dbHelper =
-                (SQLiteOpenHelper) mDbHelperClass.getConstructor(Context.class).newInstance(mContext);
-//        SQLiteOpenHelper dbHelper = new DataBaseHelper(mContext);
+        SQLiteOpenHelper dbHelper = new DataBaseHelper(mContext);
 
-        /* Use WaitlistDbHelper to get access to a writable database */
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         ContentValues testValues = new ContentValues();
@@ -99,7 +92,6 @@ public class DataBaseHelperTest {
         testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY, 99);
         testValues.put(ItemDatabaseContract.ItemListContract.COLUMN_TYPE, "BOB");
 
-        /* Insert ContentValues into database and get first row ID back */
         long firstRowId = database.insert(
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
                 null,
@@ -108,10 +100,6 @@ public class DataBaseHelperTest {
         /* If the insert fails, database.insert returns -1 */
         assertNotEquals("Unable to insert into the database", -1, firstRowId);
 
-        /*
-         * Query the database and receive a Cursor. A Cursor is the primary way to interact with
-         * a database in Android.
-         */
         Cursor wCursor = database.query(
                 /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
@@ -130,12 +118,10 @@ public class DataBaseHelperTest {
 
         assertEquals(1,wCursor.getCount());
 
-        /* Cursor.moveToFirst will return false if there are no records returned from your query */
         String emptyQueryError = "Error: No Records returned from waitlist query";
         assertTrue(emptyQueryError,
                 wCursor.moveToFirst());
 
-        /* Close cursor and database */
         wCursor.close();
         dbHelper.close();
     }
@@ -164,23 +150,20 @@ public class DataBaseHelperTest {
 
         Cursor wCursor = database.query(
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
                 null,
-                /* Optional specification for columns in the "where" clause above */
                 null,
-                /* Values for "where" clause */
                 null,
-                /* Columns to group by */
                 null,
-                /* Columns to filter by row groups */
                 null,
-                /* Sort order to return in Cursor */
                 null);
 
         assertEquals(2,wCursor.getCount());
 
         assertEquals("ID Autoincrement test failed!",
                 firstRowId + 1, secondRowId);
+
+        wCursor.close();
+        dbHelper.close();
 
     }
 
@@ -218,19 +201,12 @@ public class DataBaseHelperTest {
         assertTrue(tableNameCursor.getCount() == 1);
 
         Cursor wCursor = database.query(
-                /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
                 null,
-                /* Optional specification for columns in the "where" clause above */
                 null,
-                /* Values for "where" clause */
                 null,
-                /* Columns to group by */
                 null,
-                /* Columns to filter by row groups */
                 null,
-                /* Sort order to return in Cursor */
                 null);
 
         /* Cursor.moveToFirst will return false if there are no records returned from your query */
@@ -254,19 +230,12 @@ public class DataBaseHelperTest {
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor wCursor = database.query(
-                /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
                 null,
-                /* Optional specification for columns in the "where" clause above */
                 null,
-                /* Values for "where" clause */
                 null,
-                /* Columns to group by */
                 null,
-                /* Columns to filter by row groups */
                 null,
-                /* Sort order to return in Cursor */
                 null);
 
         assertTrue(wCursor.getCount() == 1);
@@ -291,19 +260,12 @@ public class DataBaseHelperTest {
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor wCursor = database.query(
-                /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
                 null,
-                /* Optional specification for columns in the "where" clause above */
                 null,
-                /* Values for "where" clause */
                 null,
-                /* Columns to group by */
                 null,
-                /* Columns to filter by row groups */
                 null,
-                /* Sort order to return in Cursor */
                 null);
 
         assertTrue(wCursor.getCount() == 2);
@@ -315,19 +277,12 @@ public class DataBaseHelperTest {
         SQLiteDatabase database2 = dbHelper.getReadableDatabase();
 
         Cursor wCursor2 = database2.query(
-                /* Name of table on which to perform the query */
                 ItemDatabaseContract.ItemListContract.TABLE_NAME,
-                /* Columns; leaving this null returns every column in the table */
                 null,
-                /* Optional specification for columns in the "where" clause above */
                 null,
-                /* Values for "where" clause */
                 null,
-                /* Columns to group by */
                 null,
-                /* Columns to filter by row groups */
                 null,
-                /* Sort order to return in Cursor */
                 null);
 
         assertTrue(wCursor2.getCount() == 1);
@@ -357,18 +312,10 @@ public class DataBaseHelperTest {
         ArrayList<ItemsToSave> itemList = new ArrayList<ItemsToSave>();
 
         if(cursor.moveToFirst()){
-            String quantityString = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY));
-            String name = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
-            String type = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_TYPE));
-            int quantity = Integer.parseInt(quantityString);
-            ItemsToSave itemsToSave = new ItemsToSave(quantity, name, type);
+            ItemsToSave itemsToSave = createItem(cursor);
             itemList.add(itemsToSave);
             while (cursor.moveToNext()) {
-                quantityString = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY));
-                name = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
-                type = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_TYPE));
-                quantity = Integer.parseInt(quantityString);
-                itemsToSave = new ItemsToSave(quantity, name, type);
+                itemsToSave = createItem(cursor);
                 itemList.add(itemsToSave);
             }
         }
@@ -386,6 +333,15 @@ public class DataBaseHelperTest {
 
         deleteTheDatabase();
 
+    }
+
+    @NonNull
+    private ItemsToSave createItem(Cursor cursor) {
+        String quantityString = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_QUANTITY));
+        String name = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+        String type = cursor.getString(cursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_TYPE));
+        int quantity = Integer.parseInt(quantityString);
+        return new ItemsToSave(quantity, name, type);
     }
 
 }
