@@ -9,10 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:paddingBottom="12dp"
+        android:paddingBottom="10dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="12dp"
+        android:paddingTop="10dp"
         android:gravity="center"
         >
 
@@ -29,17 +29,19 @@
     <Button
         android:id="@+id/new_item_button"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:onClick="addItemToDatabase"
         android:text="+"/>
 
         <Button
             android:id="@+id/email_button"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="Email the list"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:onClick="sendEmail"/>
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:onClick="sendEmail"
+            android:text="Email the list"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
