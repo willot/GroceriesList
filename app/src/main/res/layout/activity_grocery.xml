@@ -13,11 +13,12 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:paddingTop="12dp"
+        android:gravity="center"
         >
 
     <EditText
         android:id="@+id/new_item"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="26sp"
@@ -29,10 +30,16 @@
         android:id="@+id/new_item_button"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:onClick="AddItemToDatabase"
+        android:onClick="addItemToDatabase"
         android:text="+"/>
 
-
+        <Button
+            android:id="@+id/email_button"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Email the list"
+            android:layout_alignParentBottom="true"
+            android:onClick="sendEmail"/>
 
     </LinearLayout>
 
@@ -42,7 +49,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
-
 
 </LinearLayout>

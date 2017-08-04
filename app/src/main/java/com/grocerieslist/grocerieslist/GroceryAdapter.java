@@ -56,6 +56,10 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
     public void onBindViewHolder(GroceryAdapter.ViewHolder holder, int position) {
            if( mCursor.moveToPosition(position)) {
                String itemName = mCursor.getString(mCursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+
+               long id = mCursor.getInt(mCursor.getColumnIndex(ItemDatabaseContract.ItemListContract._ID));
+               holder.itemView.setTag(id);
+
                holder.mTextView.setText(itemName);
            }
     }

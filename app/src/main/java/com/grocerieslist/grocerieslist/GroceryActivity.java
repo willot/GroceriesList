@@ -6,13 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.view.KeyEvent;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Adapter;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.grocerieslist.grocerieslist.Data.DataBaseHelper;
 import com.grocerieslist.grocerieslist.Data.ItemDatabaseContract;
@@ -47,10 +44,23 @@ public class GroceryActivity extends AppCompatActivity {
         mAdapter = new GroceryAdapter(cursor);
         mRecyclerView.setAdapter(mAdapter);
 
+        new ItemTouchHelper(new SimpleCallback(ItemTouchHelper.DOWN|ItemTouchHelper.UP, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                long id = (long) viewHolder.itemView.getTag();
+                mDataBaseHelper.deleteItem(id);
+                mAdapter.refreshCursorItem(mDataBaseHelper.getAllItems());
+            }
+        }).attachToRecyclerView(mRecyclerView);
 
     }
 
-    void addNewItemToDatabase(String itemName){
+    private void addNewItemToDatabase(String itemName){
 
         ContentValues imputContentValue = new ContentValues();
         imputContentValue.put(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME, itemName);
@@ -59,9 +69,9 @@ public class GroceryActivity extends AppCompatActivity {
         mDataBaseHelper.createItem(imputContentValue);
     }
 
-    void AddItemToDatabase(View view){
+    public void addItemToDatabase(View view){
         String itemName = mNewItemEditText.getText().toString();
-        if(itemName == ""){
+        if(mNewItemEditText.getText().length() == 0){
             return;
         }
 
@@ -71,9 +81,12 @@ public class GroceryActivity extends AppCompatActivity {
 
         mNewItemEditText.getText().clear();
         mNewItemEditText.clearFocus();
-
-
     }
+
+
+
+
+
 
 
 }
