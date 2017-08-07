@@ -1,6 +1,7 @@
 package com.grocerieslist.grocerieslist;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +11,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.support.v7.widget.helper.ItemTouchHelper.SimpleCallback;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.grocerieslist.grocerieslist.Data.DataBaseHelper;
 import com.grocerieslist.grocerieslist.Data.ItemDatabaseContract;
+
+import java.util.ArrayList;
 
 public class GroceryActivity extends AppCompatActivity {
 
@@ -81,6 +85,42 @@ public class GroceryActivity extends AppCompatActivity {
 
         mNewItemEditText.getText().clear();
         mNewItemEditText.clearFocus();
+    }
+
+    public void sendEmail(View view){
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"vianney.willot@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Grocery List");
+
+
+
+        ArrayList<String> itemList = new ArrayList<String>();
+        String newline = System.getProperty("line.separator");
+        String emailBody ="List of Items:" + newline;
+
+
+        Cursor cursorAllItems = mDataBaseHelper.getAllItems();
+
+        if(cursorAllItems != null){
+            while (cursorAllItems.moveToNext()){
+                String itemName = cursorAllItems.getString(cursorAllItems.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
+                itemList.add(itemName);
+            }
+        }
+
+        for (String string:itemList) {
+            emailBody = emailBody + string + newline;
+        }
+
+        intent.putExtra(Intent.EXTRA_TEXT   , emailBody);
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 
