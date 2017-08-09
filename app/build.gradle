@@ -28,6 +28,11 @@ dependencies {
         exclude module: 'support-annotations'
 })
 
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2.2',{
+        exclude module: 'support-annotations'
+        exclude group: 'com.android.support'
+    })
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'

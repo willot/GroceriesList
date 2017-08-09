@@ -98,7 +98,7 @@ public class GroceryActivity extends AppCompatActivity {
 
         ArrayList<String> itemList = new ArrayList<String>();
         String newline = System.getProperty("line.separator");
-        String emailBody ="List of Items:" + newline;
+        String emailBody =getResources().getString(R.string.first_line_email) + newline;
 
 
         Cursor cursorAllItems = mDataBaseHelper.getAllItems();
