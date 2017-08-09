@@ -2,4 +2,5 @@
     <string name="app_name">Reminder and notes</string>
     <string name="groceries_button">Add Groceries</string>
     <string name="first_line_email">List of Items:</string>
+    <string name="options_menu">Options</string>
 </resources>
