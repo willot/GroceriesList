@@ -54,9 +54,22 @@ public class MainActivityTest{
     }
 
     @Test
-    public void testMenuHasOneOption(){
+    public void testMenuHasOption(){
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText(R.string.options_menu)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void testSettingsMenuOpenWhenClickingInMenu(){
+        Intents.init();;
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText(R.string.options_menu)).perform(click());
+
+        intended(hasComponent(SettingsActivity.class.getName()));
+
+        Intents.release();
+    }
+
+
 
 }
