@@ -1,6 +1,7 @@
 package com.grocerieslist.grocerieslist;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.PreferenceFragment;
@@ -16,7 +17,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
  * Created by vwillot on 8/10/2017.
  */
 
-public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener{
 
 
     @Override
@@ -52,5 +53,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+        Preference preference = findPreference(key);
+        if(preference != null){
+            String value = sharedPreferences.getString(preference.getKey(), "");
+            preference.setSummary(value
+            );
+        }
     }
 }

@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
         android:key="email"
-        android:title="Email Address"
-        android:defaultValue="bob@gmail.com"
+        android:title="@string/email_address_title"
+        android:defaultValue="bob@example.com"
+        />
+
+    <ListPreference
+        app:key="list_color"
+        android:defaultValue="random"
+        android:entries="@array/color_list_entries"
+        android:entryValues="@array/color_list_entries_values"
+        android:title="@string/list_color_selection_title"
         />
 
 </PreferenceScreen>

@@ -2,9 +2,12 @@ package com.grocerieslist.grocerieslist;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -90,14 +93,28 @@ public class GroceryActivity extends AppCompatActivity {
     }
 
     public void sendEmail(View view){
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String emailAddress = defaultSharedPreferences.getString("email", "");
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"vianney.willot@gmail.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{emailAddress});
         intent.putExtra(Intent.EXTRA_SUBJECT, "Grocery List");
 
 
+        String emailBody = generateEmailBody();
 
+        intent.putExtra(Intent.EXTRA_TEXT   , emailBody);
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @NonNull
+    private String generateEmailBody() {
         ArrayList<String> itemList = new ArrayList<String>();
         String newline = System.getProperty("line.separator");
         String emailBody =getResources().getString(R.string.first_line_email) + newline;
@@ -115,14 +132,7 @@ public class GroceryActivity extends AppCompatActivity {
         for (String string:itemList) {
             emailBody = emailBody + string + newline;
         }
-
-        intent.putExtra(Intent.EXTRA_TEXT   , emailBody);
-        try {
-            startActivity(Intent.createChooser(intent, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-
+        return emailBody;
     }
 
     @Override

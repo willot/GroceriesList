@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="color_list_entries_values">
+        <item>@string/color_blue</item>
+        <item>@string/color_fushia</item>
+        <item>@string/color_green</item>
+        <item>@string/color_yellow</item>
+    </array>
+
+    <array name="color_list_entries">
+        <item>@string/color_blue_value</item>
+        <item>@string/color_fushia_value</item>
+        <item>@string/color_green_value</item>
+        <item>@string/color_yellow_value</item>
+    </array>
+</resources>
