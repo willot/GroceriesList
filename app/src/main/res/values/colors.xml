@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBlueKing">#002366</color>
     <color name="colorFuchsia">#FF00FF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="transparent">#00000000</color>
+
 </resources>
