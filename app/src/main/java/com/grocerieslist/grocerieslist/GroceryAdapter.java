@@ -1,9 +1,15 @@
 package com.grocerieslist.grocerieslist;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +26,7 @@ import java.util.Random;
 
 public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHolder>    {
     private Cursor mCursor;
+    private String mBackGroundColorCell;
 
     public static class ViewHolder extends  RecyclerView.ViewHolder{
         public TextView mTextView;
@@ -34,8 +41,9 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         };
     }
 
-    public GroceryAdapter(Cursor cursor){
+    public GroceryAdapter(Cursor cursor, Context context){
         mCursor = cursor;
+        getBackgorundColorFromSharedPreferences(context);
     }
 
 
@@ -46,14 +54,48 @@ public class GroceryAdapter extends RecyclerView.Adapter<GroceryAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(context);
         View view  = inflater.inflate(layoutId, viewGroup, false);
 
+//        getBackgorundColorFromSharedPreferences(context);
+
+
         ViewHolder viewHolder = new ViewHolder(view);
-        int rgb = Color.rgb(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
-        viewHolder.itemView.setBackgroundColor(rgb);
+
+        generateProperBackgroundColor(context, viewHolder);
+
         return viewHolder;
+    }
+
+    private void generateProperBackgroundColor(Context context, ViewHolder viewHolder) {
+        if(mBackGroundColorCell.equals("random") || mBackGroundColorCell.equals("") ){
+            int rgb = Color.rgb(new Random().nextInt(250)+5, new Random().nextInt(250)+5, new Random().nextInt(250)+5);
+            viewHolder.itemView.setBackgroundColor(rgb);
+        }
+        else{
+
+            switch (mBackGroundColorCell){
+                case "green":
+                    viewHolder.itemView.setBackgroundColor(Color.GREEN);
+                    break;
+                case "yellow":
+                    viewHolder.itemView.setBackgroundColor(Color.YELLOW);
+                    break;
+                case "blue":
+                    viewHolder.itemView.setBackgroundColor(Color.BLUE);
+                    break;
+                case "fushia":
+                    viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorFuchsia));
+            }
+        }
+    }
+
+    private void getBackgorundColorFromSharedPreferences(Context context) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        mBackGroundColorCell = defaultSharedPreferences.getString("list_color", "random");
     }
 
     @Override
     public void onBindViewHolder(GroceryAdapter.ViewHolder holder, int position) {
+
+
            if( mCursor.moveToPosition(position)) {
                String itemName = mCursor.getString(mCursor.getColumnIndex(ItemDatabaseContract.ItemListContract.COLUMN_ITEM_NAME));
 

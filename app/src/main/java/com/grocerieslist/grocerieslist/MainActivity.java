@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickGroceriesButton(View view){
-//        mGroceriesButton.setBackgroundColor(ContextCompat.getColor(this,R.color.colorFuchsia));
         Intent intent = new Intent(this, GroceryActivity.class);
 
         mGroceriesButton.setText("You clicked it");

@@ -50,7 +50,7 @@ public class GroceryActivity extends AppCompatActivity {
         mDataBaseHelper = new DataBaseHelper(this);
 
         Cursor cursor = mDataBaseHelper.getAllItems();
-        mAdapter = new GroceryAdapter(cursor);
+        mAdapter = new GroceryAdapter(cursor, this);
         mRecyclerView.setAdapter(mAdapter);
 
         new ItemTouchHelper(new SimpleCallback(ItemTouchHelper.DOWN|ItemTouchHelper.UP, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {

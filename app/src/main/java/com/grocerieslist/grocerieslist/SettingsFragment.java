@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.EditTextPreference;
+import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 import android.view.Menu;
@@ -31,7 +32,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
         for(int index = 0; index <count; index++){
             Preference preference = preferenceScreen.getPreference(index);
             String value = sharedPreferences.getString(preference.getKey(),"");
-            if(preference instanceof EditTextPreference){
+            if(preference instanceof EditTextPreference || preference instanceof ListPreference){
                 preference.setSummary(value);
             }
         }

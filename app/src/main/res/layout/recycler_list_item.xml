@@ -7,15 +7,17 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:paddingTop="12dp"
+
     >
 
     <TextView
         android:id="@+id/item_text"
         style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:textSize="42sp"
+        android:background="@drawable/border_bottom"
         />
 
 </FrameLayout>

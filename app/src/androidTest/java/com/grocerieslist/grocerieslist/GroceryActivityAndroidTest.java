@@ -180,7 +180,7 @@ public class GroceryActivityAndroidTest {
         Intents.init();
         emailButton.perform(click());
 
-        intended(hasAction(Intent.ACTION_CHOOSER));
+        intended((hasAction(Intent.ACTION_CHOOSER)));
 
 
 

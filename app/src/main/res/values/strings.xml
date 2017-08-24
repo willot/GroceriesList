@@ -9,9 +9,11 @@
     <string name="color_fushia">Fushia</string>
     <string name="color_green">Green</string>
     <string name="color_yellow">Yellow</string>
+    <string name="color_random">Random</string>
     <string name="color_blue_value">blue</string>
     <string name="color_fushia_value">fushia</string>
     <string name="color_green_value">green</string>
     <string name="color_yellow_value">yellow</string>
+    <string name="color_random_value">random</string>
     <string name="list_color_selection_title">Select the color for the list:</string>
 </resources>
